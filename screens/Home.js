@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   ImageBackground,
+  Platform,
 } from "react-native";
 import store from "../redux/store";
 import { Provider } from "react-redux";
@@ -42,7 +43,7 @@ class Home extends Component {
           key={key}
           onPress={() => this.props.navigation.navigate("Evento", { key })}
         >
-          <View key={key} style={styles.viewHolder}>
+          <View key={key} style={styles.viewPartido}>
             <Text style={{ color: "white" }} >{item.nombreEvento} ({confirmados.length}/{item.participantes.length} jugadores)</Text>
           </View>
         </TouchableOpacity>
@@ -50,7 +51,8 @@ class Home extends Component {
     });
 
     return (
-      <ImageBackground source={require('../assets/pasto.jpg')} style={{ flex: 1, paddingTop: 20, backgroundColor: "#34495E" }}>
+      <View style={styles.container}>
+      <ImageBackground source={require('../assets/pasto.jpg')} style={{ flex: 3, paddingTop: 20}}>
         <Text
           style={{
             marginBottom: 10,
@@ -64,22 +66,38 @@ class Home extends Component {
           Partidos
         </Text>
         <ScrollView>
-          <View style={styles.contenedorParticipantes}>{nuevoArray}</View>
+          <TouchableOpacity activeOpacity={0.8}><View style={styles.contenedorJugadores}>{nuevoArray}</View></TouchableOpacity>
         </ScrollView>
         <View>
+          <TouchableOpacity
+          activeOpacity={0.8}>
           <Button
             title="Agregar partido"
             color="#FF0000"
             onPress={() => this.props.navigation.navigate("AddEvento")}
-          />
+          /></TouchableOpacity>
         </View>
+
       </ImageBackground>
+        <View style={styles.footer}>
+        {
+          Platform.OS == 'android'
+          ?
+          <Text>Trabajo React -Android</Text>
+          :
+          Platform.OS == 'ios'
+          ?
+          <Text>Trabajo React -IOS</Text>
+          :
+          <Text>Trabajo React -Web</Text>
+        }
+      </View></View>      
     );
   }
 }
 
 const styles = StyleSheet.create({
-    viewHolder: {
+    viewPartido: {
     height: 55,
     backgroundColor: "#1CA901",
     justifyContent: "center",
@@ -91,22 +109,42 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 25,
   },
-  contenedorParticipantes: {
+  contenedorJugadores: {
     flexDirection: "column",
     margin: 10,
     padding: 2,
   },
+  footer:{
+    flex:0.2,
+    justifyContent:'center',
+    alignItems: 'center',
+    ...Platform.select({
+      'ios': {
+        backgroundColor: '#FCE694'
+      },
+      'android': {
+        backgroundColor: '#679436'
+      },
+      'web':{
+        backgroundColor: '#8FBB99'
+      }
+    })
+  },
+  container:{
+    flex:1,
+    flexDirection: 'column',
+  }
 });
-
-const mapDispatchToProps = {
-  agregar_evento_accion,
-  retornar_evento_accion,
-};
-
 const mapStateToProps = (state) => {
   return {
     eventos: state.event_reducer,
   };
 };
+const mapDispatchToProps = {
+  agregar_evento_accion,
+  retornar_evento_accion,
+};
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

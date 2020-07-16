@@ -8,11 +8,11 @@ const default_event_state = {
   eventos: [
     {
       idEvento: "0",
-      nombreEvento: "Cumple",
+      nombreEvento: "Libertadores",
       participantes: [
         {
           indiceParticipante: "0",
-          nombreParticipante: "Arian",
+          nombreParticipante: "Riquelme",
           estado: true,
         },
       ],
@@ -35,7 +35,7 @@ const event_reducer = (state = default_event_state, action) => {
       };
     }
     case CAMBIAR_ASISTENCIA: {
-      const hola = state.eventos[action.payload.idEvento].participantes;
+      const ind = state.eventos[action.payload.idEvento].participantes;
       return {
         ...state,
         eventos: [...state.eventos],

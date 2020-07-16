@@ -7,7 +7,9 @@ import {
   Switch,
   ScrollView,
   Vibration,
-  ImageBackground
+  ImageBackground,
+  Platform,
+  TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -43,6 +45,11 @@ class Blog extends Component {
     }
   };
 
+  actualizarEstadoRedux = () => {
+    this.props.cambiar_asistencia_accion(this.state.idEvento, this.state.lista);
+    this.props.navigation.navigate("Inicio");
+  };
+
   SwitchGo(num, e) {
     const lista = [...this.state.lista];
     lista[num].estado = !lista[num].estado;
@@ -50,11 +57,6 @@ class Blog extends Component {
       Vibration.vibrate(500);
     }
     this.setState({ lista });
-  };
-
-  actualizarEstadoRedux = () => {
-    this.props.cambiar_asistencia_accion(this.state.idEvento, this.state.lista);
-    this.props.navigation.navigate("Inicio");
   };
 
   render() {
@@ -67,13 +69,13 @@ class Blog extends Component {
       this.ejemplofuncion(identificador, key);
       return (
         <View style={styles.container1}>
-          <Text style={{ fontSize: 15, fontWeight: "bold", color: "white" }}>
+          <Text style={{ fontSize: 15, fontWeight: "bold", color: "white", marginRight:20, marginLeft:20 }}>
             {item.nombreParticipante}
           </Text>
           <Switch
             key={key}
             disabled={false}
-            style={{ alignContent: "flex-end", justifyContent: "flex-end" }}
+            style={{ alignContent: "flex-end", justifyContent: "flex-end", marginLeft:20, marginRight:20 }}
             value={this.state.lista[key].estado}
             onValueChange={this.SwitchGo.bind(this, key)}
           />
@@ -87,7 +89,7 @@ class Blog extends Component {
     );
 
     return (
-      <View style={styles.container}>
+        <View style={{flexDirection:'column'},{flex:1}}>
         <ImageBackground source={require('../assets/pasto.jpg')} style={styles.listita}>
           <Text
             style={{
@@ -113,16 +115,32 @@ class Blog extends Component {
           >
             Participantes: {this.props.eventos.eventos[identificador].participantes.length}
           </Text>
+          <View style={styles.container}>
           <ScrollView>
             <View style={styles.contenedorParticipantes}>{nuevoArray}</View>
           </ScrollView>
+          </View>
+          <TouchableOpacity
+          activeOpacity={0.8}>
           <Button
             title="Confirmar"
-            color="#FF0000"
+            color='#FF0000'
             onPress={this.actualizarEstadoRedux}
-          ></Button>
+          ></Button></TouchableOpacity>
         </ImageBackground>
-      </View>
+        <View style={styles.footer}>
+        {
+          Platform.OS == 'android'
+          ?
+          <Text>Trabajo React -Android</Text>
+          :
+          Platform.OS == 'ios'
+          ?
+          <Text>Trabajo React -IOS</Text>
+          :
+          <Text>Trabajo React -Web</Text>
+        }
+      </View></View>        
     );
   }
 }
@@ -130,42 +148,58 @@ class Blog extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#D7D7D7",
     alignItems: "center",
-    justifyContent: "flex-start",
-    flexDirection: "row",
-    backgroundColor: "#ff4081",
+    justifyContent: "center",
+    flexDirection: "column",
   },
   container1: {
     flex: 1,
-    backgroundColor: "#D7D7D7",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     flexDirection: "row",
-    backgroundColor: "#1CA901",
+    backgroundColor:'#1CA901',    
     marginTop: 8,
-    paddingStart: 10,
+    paddingStart: 30,
+    borderRadius:25
   },
   listita: {
-    flex: 1,
+    flex: 3,
     paddingTop: 20,
-    backgroundColor: "#34495E",
   },
   contenedorParticipantes: {
+    flex:1,
     flexDirection: "column",
     marginTop: 10,
     padding: 5,
   },
+  footer:{
+    flex:0.2,
+    justifyContent:'center',
+    alignItems: 'center',
+    ...Platform.select({
+      'ios': {
+        backgroundColor: '#FCE694'
+      },
+      'android': {
+        backgroundColor: '#679436'
+      },
+      'web':{
+        backgroundColor: '#8FBB99'
+      }
+    })
+  },
 });
-const mapDispatchToProps = {
-  agregar_evento_accion,
-  cambiar_asistencia_accion,
-};
+
 
 const mapStateToProps = (state) => {
   return {
     eventos: state.event_reducer,
   };
+};
+
+const mapDispatchToProps = {
+  agregar_evento_accion,
+  cambiar_asistencia_accion,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blog);

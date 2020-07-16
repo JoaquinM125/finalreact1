@@ -1,4 +1,5 @@
 import React from "react";
+import {Platform} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from "react-redux";
@@ -15,11 +16,21 @@ function NavStack() {
     <Provider store={store}>
       <Stack.Navigator
         screenOptions={{
-          headerTitleAlign: "left",
+          headerTitleAlign: "center",
           headerStyle: {
-            backgroundColor: "#108600",
+            ...Platform.select({
+              'ios': {
+                backgroundColor: '#FCE694'
+              },
+              'android': {
+                backgroundColor: '#679436'
+              },
+              'web': {
+                backgroundColor: '#8FBB99'
+              },
+            })
           },
-          headerTintColor: "#fff",
+          headerTintColor: "#000",
           headerTitleStyle: {
             fontWeight: "bold",
           },
@@ -28,7 +39,7 @@ function NavStack() {
         <Stack.Screen
           name="Inicio"
           component={Home}
-          options={{ title: "Match" }}
+          options={{ title: "CanchApp" }}
         />
         <Stack.Screen
           name="Evento"
