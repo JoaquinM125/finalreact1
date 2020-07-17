@@ -13,8 +13,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import {
-  agregar_evento_accion,
-  retornar_evento_accion,
+  agregar_partido_accion,
   cambiar_asistencia_accion,
 } from "../redux/actions/participanteAction";
 
@@ -101,7 +100,7 @@ class Blog extends Component {
               color: "white",
             }}
           >
-            Evento: {this.props.eventos.eventos[this.state.idEvento].nombreEvento}
+            Partido: {this.props.eventos.eventos[this.state.idEvento].nombreEvento}
           </Text>
           <Text
             style={{
@@ -198,7 +197,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  agregar_evento_accion,
+  agregar_partido_accion,
   cambiar_asistencia_accion,
 };
 

@@ -1,6 +1,6 @@
 import {
-  AGREGAR_EVENTO,
-  RETORNAR_EVENTO,
+  AGREGAR_PARTIDO,
+  RETORNAR_PARTIDO,
   CAMBIAR_ASISTENCIA,
 } from "../actions/participanteAction";
 
@@ -22,13 +22,13 @@ const default_event_state = {
 
 const event_reducer = (state = default_event_state, action) => {
   switch (action.type) {
-    case AGREGAR_EVENTO: {
+    case AGREGAR_PARTIDO: {
       return {
         ...state,
         eventos: [...state.eventos, action.payload],
       };
     }
-    case RETORNAR_EVENTO: {
+    case RETORNAR_PARTIDO: {
       return {
         ...state,
         eventos: [...state.eventos],

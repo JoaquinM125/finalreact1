@@ -12,7 +12,7 @@ import {
   Platform
 } from "react-native";
 import { connect } from "react-redux";
-import { agregar_evento_accion } from "../redux/actions/participanteAction";
+import { agregar_partido_accion } from "../redux/actions/participanteAction";
 
 class BlogDetails extends Component {
   constructor(props) {
@@ -20,10 +20,29 @@ class BlogDetails extends Component {
     this.state = { valorArray: [], participante: "", evento: "" };
     this.indice = 0;
   }
+  agregarPartido = () => {
+    if (this.state.evento == "") {
+      Alert.alert("Debe ingresar un nombre para el partido");
+    } else if (this.state.valorArray == 0) {
+      Alert.alert("El partido debe tener al menos un jugador");
+    }
+    else {
+      let event = {
+        idEvento: 1,
+        nombreEvento: this.state.evento,
+        participantes: this.state.valorArray,
+      };
 
-  agregarParticipante = () => {
+
+      this.props.agregar_partido_accion(event);
+      this.props.navigation.navigate("Inicio");
+    }
+  };
+
+
+  agregarJugador = () => {
     if (this.state.participante == "") {
-      Alert.alert("Debe ingresar un nombre del participante primero");
+      Alert.alert("Debe ingresar un nombre del jugador primero");
     }
     else {
       let nuevoParticipante = {
@@ -40,32 +59,14 @@ class BlogDetails extends Component {
     }
   };
 
-  agregarEvento = () => {
-    if (this.state.evento == "") {
-      Alert.alert("Debe ingresar un nombre para el partido");
-    } else if (this.state.valorArray == 0) {
-      Alert.alert("El evento debe tener al menos un participante");
-    }
-    else {
-      let event = {
-        idEvento: 1,
-        nombreEvento: this.state.evento,
-        participantes: this.state.valorArray,
-      };
-
-
-      this.props.agregar_evento_accion(event);
-      this.props.navigation.navigate("Inicio");
-    }
+  handleCompetencia = (text) => {
+    this.setState({ evento: text });
   };
 
-  handleParticipante = (text) => {
+  handleJugador = (text) => {
     this.setState({ participante: text });
   };
 
-  handleEvento = (text) => {
-    this.setState({ evento: text });
-  };
 
   render() {
     let arrayNuevo = this.state.valorArray.map((item, key) => {
@@ -86,10 +87,10 @@ class BlogDetails extends Component {
             <TextInput
               style={styles.input}
               underlineColorAndroid="transparent"
-              placeholder="Competencia"
+              placeholder="Partido"
               placeholderTextColor="white"
               autoCapitalize="none"
-              onChangeText={this.handleEvento}
+              onChangeText={this.handleCompetencia}
             />
           </View>
           <View style={styles.headerInput}>
@@ -99,13 +100,13 @@ class BlogDetails extends Component {
               placeholder="Nombre del Jugador"
               placeholderTextColor="white"
               autoCapitalize="none"
-              onChangeText={this.handleParticipante}
+              onChangeText={this.handleJugador}
             />
           </View>
           <TouchableOpacity
               activeOpacity={0.8}
               style={styles.btn_Agregar}
-              onPress={this.agregarParticipante}
+              onPress={this.agregarJugador}
             >
               <Text style={{ color: "white" }} >AGREGAR</Text>
             </TouchableOpacity>
@@ -120,7 +121,7 @@ class BlogDetails extends Component {
           <Button
             title="Confirmar Partido"
             color="#FF0000"
-            onPress={this.agregarEvento} /></TouchableOpacity>
+            onPress={this.agregarPartido} /></TouchableOpacity>
         </View>
       </ImageBackground>
       <View style={styles.footer}>
@@ -211,7 +212,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  agregar_evento_accion,
+  agregar_partido_accion,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogDetails);

@@ -14,8 +14,8 @@ import store from "../redux/store";
 import { Provider } from "react-redux";
 import { connect } from "react-redux";
 import {
-  agregar_evento_accion,
-  retornar_evento_accion,
+  agregar_partido_accion,
+  retornar_partido_accion,
 } from "../redux/actions/participanteAction";
 
 class Home extends Component {
@@ -27,8 +27,8 @@ class Home extends Component {
   }
 
   ejemplofuncion = () => {
-    let asdasd = this.props.eventos.eventos;
-    this.state.lista = asdasd;
+    let ej = this.props.eventos.eventos;
+    this.state.lista = ej;
   };
   render() {
 
@@ -141,8 +141,8 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = {
-  agregar_evento_accion,
-  retornar_evento_accion,
+  agregar_partido_accion,
+  retornar_partido_accion,
 };
 
 
